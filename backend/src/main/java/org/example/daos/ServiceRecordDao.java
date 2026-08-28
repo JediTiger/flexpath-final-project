@@ -29,15 +29,27 @@ public class ServiceRecordDao {
 
     // TODO: Search??
 
-    // TODO: Create a service record
+    // Create a service record
+    public ServiceRecord createRecord(ServiceRecord record) {
+        String sql = "INSERT INTO service_records (vehicle_id, service_name, service_provider, description, cost, mileage, service_date, is_private) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
+        jdbcTemplate.update(sql, record.getVehicleId(), record.getServiceName(), record.getServiceProvider(), record.getDescription(), record.getCost(), record.getMileage(), record.getServiceDate().toString(), record.isPrivate());
+        return record;
+    }
+    // Update a service records
+    public int updateRecord(ServiceRecord record) {
+        String sql = "UPDATE service_records SET service_name = ?, service_provider = ?, description = ?, " +
+                "cost = ?, mileage = ?, service_date = ?, is_private = ? WHERE id = ?;";
+        return jdbcTemplate.update(sql, record.getServiceName(), record.getServiceProvider(), record.getDescription(),
+                record.getCost(), record.getMileage(), record.getServiceDate().toString(), record.isPrivate(), record.getId());
+    }
 
-    // TODO: Update a service records
-
-    // TODO: Delete a service record
-
+    // Delete a service record
+    public int deleteRecord(Long id) {
+        return jdbcTemplate.update("DELETE FROM service_records WHERE id = ?;", id);
+    }
     // TODO: special get for Admins so they see everything
 
-    // TODO: connect DB results to model
+    // Connect DB results to model
     private ServiceRecord connectDBToServiceRecord(ResultSet rs, int rowNum) throws SQLException {
         ServiceRecord serviceRecord = new ServiceRecord();
         serviceRecord.setId(rs.getLong("id"));
