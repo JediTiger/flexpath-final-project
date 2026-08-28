@@ -1,5 +1,7 @@
 package org.example.models;
 
+import java.time.LocalDate;
+
 // Field will be id, vehicleId, serviceProvider, serviceName, description, cost, mileage, serviceDate, isPrivate
 /*
     - id, vehicleId will be Long
@@ -11,7 +13,16 @@ package org.example.models;
  */
 
 public class ServiceRecord {
-    // TODO: Add vars for the fields
+    // Vars for the fields
+    private Long id;
+    private Long vehicleId;
+    private String serviceName;
+    private String serviceProvider;
+    private String description;
+    private double cost;
+    private Integer mileage;
+    private LocalDate serviceDate;
+    private boolean isPrivate;
 
     // TODO: Constructor(s)
 
