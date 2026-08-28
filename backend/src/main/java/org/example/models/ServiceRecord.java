@@ -24,9 +24,48 @@ public class ServiceRecord {
     private LocalDate serviceDate;
     private boolean isPrivate;
 
-    // TODO: Constructor(s)
+    // Constructor(s)
+    public ServiceRecord() { }
 
-    // TODO: Getters & Setters
+    // Parameterized Constructor
+    public ServiceRecord(Long id, Long vehicleId, String serviceName, String serviceProvider,
+                         String description, double cost, Integer mileage, LocalDate serviceDate, boolean isPrivate) {
+        this.id = id;
+        this.vehicleId = vehicleId;
+        this.serviceName = serviceName;
+        this.serviceProvider = serviceProvider;
+        this.description = description;
+        this.cost = cost;
+        this.mileage = mileage;
+        this.serviceDate = serviceDate;
+        this.isPrivate = isPrivate;
+    }
+    // Getters & Setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
+    public Long getVehicleId() { return vehicleId; }
+    public void setVehicleId(Long vehicleId) { this.vehicleId = vehicleId; }
 
+    public String getServiceName() { return serviceName; }
+    public void setServiceName(String serviceName) { this.serviceName = serviceName; }
+
+    public String getServiceProvider() { return serviceProvider; }
+    public void setServiceProvider(String serviceProvider) { this.serviceProvider = serviceProvider; }
+
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
+
+    public double getCost() { return cost; }
+    public void setCost(double cost) { this.cost = cost; }
+
+    public Integer getMileage() { return mileage; }
+    public void setMileage(Integer mileage) { this.mileage = mileage; }
+
+    public LocalDate getServiceDate() { return serviceDate; }
+    public void setServiceDate(LocalDate serviceDate) { this.serviceDate = serviceDate; }
+
+    public boolean isPrivate() { return isPrivate; }
+    public void setPrivate(boolean isPrivate) { this.isPrivate = isPrivate; }
 }
+
