@@ -1,22 +1,22 @@
 package org.example.controllers;
 
-public class ServiceRecordController {
 // TODO: Needs Rest, mapping, origin and authorize annotations
+public class ServiceRecordController {
 
-// TODO: Needs auto wired DAO
+    // TODO: Needs auto wired DAO
 
-// TODO: Get users garage (can sort by year or make)
+    // TODO: Get users garage (can sort by year or make)
 
-// TODO: Get public vehicles for public view
+    // TODO: Get public vehicles for public view
 
-// TODO: Search vehicles by make or model
+    // TODO: Search vehicles by make or model
 
-// TODO: Create vehicle
+    // TODO: Create vehicle
 
-// TODO: Update vehicle
+    // TODO: Update vehicle
 
-// TODO: Delete vehicle
+    // TODO: Delete vehicle
 
-// TODO: Special method for Admin view all
+    // TODO: Special method for Admin view all
 
 }

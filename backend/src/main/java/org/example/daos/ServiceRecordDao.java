@@ -27,7 +27,11 @@ public class ServiceRecordDao {
     }
     // TODO: Get all public service records to display in public views
 
-    // TODO: Search??
+    // Search
+    public List<ServiceRecord> searchRecords(Long vehicleId, String provider, String name) {
+        String sql = "SELECT * FROM service_records WHERE vehicle_id = ? AND service_provider = ? AND LOWER(service_name) LIKE LOWER(?);";
+        return jdbcTemplate.query(sql, this::connectDBToServiceRecord, vehicleId, provider, "%" + name + "%");
+    }
 
     // Create a service record
     public ServiceRecord createRecord(ServiceRecord record) {
