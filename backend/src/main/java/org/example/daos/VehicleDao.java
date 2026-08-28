@@ -45,10 +45,14 @@ public class VehicleDao {
         return vehicle;
     }
 
-    // TODO: Update a vehicle
+    // Update a vehicle
+    public int updateVehicle(Vehicle vehicle) {
+        String sql = "UPDATE vehicles SET make = ?, model = ?, year = ?, is_private = ? WHERE id = ?;";
+        return jdbcTemplate.update(sql, vehicle.getMake(), vehicle.getModel(), vehicle.getYear(), vehicle.isPrivate(), vehicle.getId());
+    }
 
     // Delete a vehicle
-    // FIXME: ?? How to do this so it would delete vehicles and service records attached to that vehicle
+    // FIXME: ?? If the vehicle is deleted, wouldn't the service records for it also go?
     public int deleteVehicle(Long id) {
         return jdbcTemplate.update("DELETE FROM vehicles WHERE id = ?;", id);
     }
