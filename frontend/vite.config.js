@@ -5,9 +5,11 @@ import react from "@vitejs/plugin-react";
 export default defineConfig({
   plugins: [react()],
   server: {
+    // FIXME: Spring Boot is the problem. It doesn't like that the site runs on 5173 but requests are going to
+    //  8080 so the interwebs recommend setting up this proxy
     proxy: {
       "/api": {
-        target: "http://127.0.0.1:8080/",
+        target: "http://localhost:8080/",
         changeOrigin: true,
         secure: false,
         ws: true,

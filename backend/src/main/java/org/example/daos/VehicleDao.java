@@ -26,6 +26,11 @@ public class VehicleDao {
         return jdbcTemplate.query(sql, this::connectDAOToVehicle, username);
     }
 
+    public List<Vehicle> getAllByUsername(String username) {
+        String sql = "SELECT * FROM vehicles WHERE username = ? ORDER BY year DESC;";
+        return jdbcTemplate.query(sql, this::connectDAOToVehicle, username);
+    }
+
     // Get all public vehicles to display in public views
     public List<Vehicle> getPublicVehicles() {
         String sql = "SELECT * FROM vehicles WHERE is_private = FALSE ORDER BY year DESC;";
@@ -53,6 +58,7 @@ public class VehicleDao {
 
     // Delete a vehicle
     // FIXME: ?? If the vehicle is deleted, wouldn't the service records for it also go?
+    // FIXME: Return value never used?
     public int deleteVehicle(Long id) {
         return jdbcTemplate.update("DELETE FROM vehicles WHERE id = ?;", id);
     }

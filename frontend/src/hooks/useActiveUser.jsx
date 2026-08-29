@@ -30,6 +30,7 @@ export function UserProvider({ children }) {
 }
 
 // Originally, this was a custom hook made to update the active user, but now it fetches it from the App parent
+// FIXME: Doing this I completely avoided Spring Security so I am moving it back to that but keeping localStorage cache
 export function useActiveUser() {
     const context = useContext(ActiveUserContext);
     if (!context) {

@@ -27,3 +27,6 @@ dist-ssr
 
 backend/.idea
 backend/target
+
+# Removing application.properties to protect DB login
+application.properties

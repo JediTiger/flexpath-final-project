@@ -1,10 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { useActiveUser } from '../hooks/useActiveUser.jsx';
-// ~/flexpath/flexpath-final-project/frontend/src/hooks/useActiveUser.js
-export default function Garage() {
-    const { activeUser, getQueryParam } = useActiveUser();
+import { vehicleService } from '../../services/api.js';
 
+export default function Garage() {
     const [vehicles, setVehicles] = useState([]);
     const [make, setMake] = useState('');
     const [model, setModel] = useState('');
@@ -15,51 +13,40 @@ export default function Garage() {
 
     const fetchVehicles = async () => {
         try {
-            const urlServer = 'http://localhost';
-            const urlPort = "8080";
-            const urlPath = `/api/vehicles/my?${getQueryParam()}&`;
-
-            const url = `${urlServer}:${urlPort}${urlPath}sortBy=${sortBy}&direction=${direction}`;
-
-            const response = await fetch(url);
-            if (response.ok) {
-                const data = await response.json();
-                setVehicles(data);
-            }
+            const data = await vehicleService.getMyVehicles(sortBy, direction);
+            setVehicles(data);
         } catch (err) {
             console.error("Error loading garage profiles:", err);
         }
     };
 
     useEffect(() => {
-        const loadGarage = async () => {
-            await fetchVehicles();
+        fetchVehicles();
+
+        const handleIdentityShift = () => {
+            fetchVehicles();
         };
-        loadGarage();
-    }, [sortBy, direction, activeUser]);
+
+        window.addEventListener('activeUserChanged', handleIdentityShift);
+        return () => {
+            window.removeEventListener('activeUserChanged', handleIdentityShift);
+        };
+    }, [sortBy, direction]);
 
     const handleCreateVehicle = async (event) => {
         event.preventDefault();
         const newVehicle = { make, model, year: parseInt(year, 10), private: isPrivate };
         try {
-            const response = await fetch(`http://localhost:8080/api/vehicles?${getQueryParam()}`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(newVehicle)
-            });
-            if (response.ok) {
-                setMake(''); setModel(''); setYear('');
-                await fetchVehicles();
-            }
+            await vehicleService.createVehicle(newVehicle);
+            setMake(''); setModel(''); setYear('');
+            await fetchVehicles();
         } catch (err) { console.error(err); }
     };
 
     const handleDelete = async (id) => {
         if (window.confirm("Delete this vehicle?")) {
             try {
-                await fetch(`http://localhost:8080/api/vehicles/${id}?${getQueryParam()}`, {
-                    method: 'DELETE'
-                });
+                await vehicleService.deleteVehicle(id);
                 await fetchVehicles();
             } catch (err) { console.error(err); }
         }
@@ -70,10 +57,11 @@ export default function Garage() {
             <div className="d-flex justify-content-between align-items-center mb-4">
                 <div>
                     <h2>My Garage (Vehicles)</h2>
-                    <p className="text-muted">Currently viewing files as: <strong className="text-primary">{activeUser}</strong></p>
+                    <p className="text-muted">Currently managing files as: <strong className="text-primary">{localStorage.getItem('activeUser') || 'user 1'}</strong></p>
                 </div>
             </div>
 
+            {/* Sorting controls */}
             <div className="card mb-4 bg-body-tertiary border-0 shadow-sm">
                 <div className="card-body d-flex align-items-center gap-3">
                     <label className="fw-bold mb-0">Sort Garage By:</label>
@@ -88,6 +76,10 @@ export default function Garage() {
                 </div>
             </div>
 
+            {/* TODO: would be 'lower tech' but maybe this could be a nice looking table instead of cards
+                they are nice but they take up a lot of space and require special formatting
+            */}
+            {/* Display cards for vehicles */}
             <div className="row row-cols-1 row-cols-md-3 g-4 mb-5">
                 {vehicles.length === 0 ? (
                     <div className="col-12 w-100">
@@ -112,6 +104,7 @@ export default function Garage() {
                 ))}
             </div>
 
+            {/* Add a vehicle form */}
             <div className="card p-4 shadow-sm border-0 bg-white" style={{ maxWidth: '500px' }}>
                 <h4 className="mb-3 fw-bold">➕ Add a Vehicle</h4>
                 <form onSubmit={handleCreateVehicle}>
