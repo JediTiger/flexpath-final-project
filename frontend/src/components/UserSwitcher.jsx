@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { ltc } from '/Users/sean/dev/lc/flexpath/flexpath-final-project/backend/src/main/utilities/logToConsole.js';
 
 /* In my attempt to centralize the active user setup I have broken the app
    FIXME: Ok. So the problem is I was avoiding Spring Boot Security so I'm moving back to the Principal thing
@@ -6,13 +7,17 @@ import { useState, useEffect } from 'react';
  That leads me to believe its a security issue?
 */
 export default function UserSwitcher() {
+    ltc("UserSwitcher","localStorage", localStorage)
+    // Check localStorage for activeUser and sets it to 'user 1' if not found
     const [currentUser, setCurrentUser] = useState(localStorage.getItem('activeUser') || 'user 1');
-
     // TODO: Research this more. Need to make sure its not the problem
     const encodeBase64 = (str) => {
         const bytes = new TextEncoder().encode(str);
         const binString = String.fromCodePoint(...bytes);
-        return btoa(binString);
+        const binStr = btoa(binString)
+        ltc("UserSwitcher", "binString", binStr);
+        return binStr
+
     };
 
     // If the encodeBase above is working this should be ok as is

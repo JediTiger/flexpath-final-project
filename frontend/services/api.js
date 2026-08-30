@@ -1,3 +1,5 @@
+import { ltc } from '../../backend/src/main/utilities/logToConsole.js'
+
 // FIXME: Change absolute path to relative path
 const urlBase = '/api';
 
@@ -7,7 +9,35 @@ const urlBase = '/api';
     This will field those requests and return the response
 */
 // This queries the browsers localStorage for the authorization header
-const getAuthHeader = () => localStorage.getItem('authHeader');
+// const getAuthHeader = () => localStorage.getItem('authHeader');
+// FIXME: Getting a 401 error due to JWT not getting a Bearer token it expects
+const getAuthHeader = () => {
+    let token = localStorage.getItem('authHeader');
+    ltc("api.js", "localStorage", localStorage)
+    if (!token) return '';
+
+    // Fix A: If your localStorage token is mistakenly wrapped in an object or quotes, unwrap it
+    if (token.startsWith('{') || token.startsWith('[')) {
+        try {
+            const parsed = JSON.parse(token);
+            token = parsed.token || parsed.accessToken || token;
+        } catch(err) {
+            console.error(err)
+        }
+    }
+
+    // Fix B: Safely clean up quotes that localStorage stringify sometimes leaves behind
+    token = token.replace(/^"+|"+$/g, '');
+
+    // Fix C: Clean up the Bearer prefix mapping for eu.fraho
+    if (token.startsWith('Bearer ')) {
+        return token; // already formatted correctly
+    }
+
+    return `Bearer ${token}`;
+};
+
+
 
 // "Vehicle service"
 export const vehicleService = {
