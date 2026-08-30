@@ -11,7 +11,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/vehicles")
 @CrossOrigin
-@PreAuthorize("isAuthenticated()")
+//@PreAuthorize("isAuthenticated()")
+@PreAuthorize("permitAll()")
 public class VehicleController {
 
     @Autowired
@@ -26,7 +27,7 @@ public class VehicleController {
         String username = principal.getName();
 
         if ("admin".equalsIgnoreCase(username)) {
-            return vehicleDao.getAllVehicles();
+            return vehicleDao.getAllVehiclesAdmin();
         }
 
         return vehicleDao.getByUsername(username, sortBy, direction);

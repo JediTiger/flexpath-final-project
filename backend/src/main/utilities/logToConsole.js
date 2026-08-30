@@ -1,7 +1,7 @@
-export default function ltc("prefix". "message") {
+export function ltc(callingFunc, prefix, message) {
     if (message === null) {
-        return prefix;
+        return `${callingFunc}: prefix`;
     } else {
-        return `${prefix}: ${message}`;
+        return `${callingFunc} ${prefix}: ${message}`;
     }
 }

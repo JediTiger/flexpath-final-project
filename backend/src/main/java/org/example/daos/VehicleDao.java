@@ -64,7 +64,7 @@ public class VehicleDao {
     }
 
     // Special get for Admins so they see everything
-    public List<Vehicle> getAllVehicles() {
+    public List<Vehicle> getAllVehiclesAdmin() {
         return jdbcTemplate.query("SELECT * FROM vehicles;", this::connectDAOToVehicle);
     }
 
