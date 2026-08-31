@@ -1,6 +1,5 @@
 import { ltc } from '../../backend/src/main/utilities/logToConsole.js'
 
-// FIXME: Change absolute path to relative path
 const urlBase = '/api';
 
 /*

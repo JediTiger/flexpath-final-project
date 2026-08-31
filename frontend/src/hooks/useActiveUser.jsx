@@ -8,11 +8,14 @@ const ActiveUserContext = createContext();
 
 export function UserProvider({ children }) {
     const [activeUser, setActiveUser] = useState(localStorage.getItem('activeUser') || 'user 1');
+    const [userRole, setUserRole] = useState(localStorage.getItem('userRole') || 'user');
 
     useEffect(() => {
         if (!localStorage.getItem('activeUser')) {
             localStorage.setItem('activeUser', 'user 1');
+            localStorage.setItem('userRole', 'user');
             setActiveUser('user 1');
+            setUserRole('user');
         }
     }, []);
 
@@ -30,7 +33,7 @@ export function UserProvider({ children }) {
 }
 
 // Originally, this was a custom hook made to update the active user, but now it fetches it from the App parent
-// FIXME: Doing this I completely avoided Spring Security so I am moving it back to that but keeping localStorage cache
+// TODO: Avoiding Spring Security to ensure the app works before adding Auth back in
 export function useActiveUser() {
     const context = useContext(ActiveUserContext);
     if (!context) {

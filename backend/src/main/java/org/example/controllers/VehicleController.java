@@ -11,20 +11,20 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/vehicles")
 @CrossOrigin
-// TODO:
+// TODO: Will turn this back on once I can ensure the app works correctly
 // @PreAuthorize("isAuthenticated()")
 public class VehicleController {
 
     @Autowired
     private VehicleDao vehicleDao;
 
+    String username = "user 1";
+
     @GetMapping("/my")
-    public List<Vehicle> getMyVehicles(
-            Principal principal,
+    public List<Vehicle> getMyVehicles(userName,
             @RequestParam(defaultValue = "year") String sortBy,
             @RequestParam(defaultValue = "desc") String direction) {
 
-        String username = principal.getName();
 
         if ("admin".equalsIgnoreCase(username)) {
             return vehicleDao.getAllVehiclesAdmin();
