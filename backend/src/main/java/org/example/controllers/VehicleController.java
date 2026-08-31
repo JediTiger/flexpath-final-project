@@ -11,8 +11,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/vehicles")
 @CrossOrigin
-//@PreAuthorize("isAuthenticated()")
-@PreAuthorize("permitAll()")
+// TODO:
+// @PreAuthorize("isAuthenticated()")
 public class VehicleController {
 
     @Autowired

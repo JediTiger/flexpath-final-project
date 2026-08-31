@@ -16,7 +16,7 @@ import java.util.List;
 @RequestMapping("/api/service-records")
 @CrossOrigin
 // TODO: turning this back on engages Spring Security again but now my requests aren't getting to the controllers
-@PreAuthorize("isAuthenticated()")
+// @PreAuthorize("isAuthenticated()")
 public class ServiceRecordController {
 
     @Autowired

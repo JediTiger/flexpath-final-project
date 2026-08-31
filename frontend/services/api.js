@@ -16,31 +16,9 @@ const getAuthHeader = () => {
     ltc("api.js", "localStorage", localStorage)
     if (!token) return '';
 
-    // Fix A: If your localStorage token is mistakenly wrapped in an object or quotes, unwrap it
-    if (token.startsWith('{') || token.startsWith('[')) {
-        try {
-            const parsed = JSON.parse(token);
-            token = parsed.token || parsed.accessToken || token;
-        } catch(err) {
-            console.error(err)
-        }
-    }
-
-    // Fix B: Safely clean up quotes that localStorage stringify sometimes leaves behind
-    token = token.replace(/^"+|"+$/g, '');
-
-    // Fix C: Clean up the Bearer prefix mapping for eu.fraho
-    if (token.startsWith('Bearer ')) {
-        return token; // already formatted correctly
-    }
-
-    return `Bearer ${token}`;
-};
-
-
 
 // "Vehicle service"
-export const vehicleService = {
+const vehicleService = {
     // Fetch vehicles (Spring Security Principal resolves user internally)
     getMyVehicles: async (sortBy, direction) => {
         const query = `sortBy=${sortBy}&direction=${direction}`;
@@ -82,6 +60,9 @@ export const vehicleService = {
 // Service record service
 export const recordService = {
     // Get records by vehicle (FIXME: and should be user)
+    /*
+    Ok so a vehicle is owned by that user and each record is connected to a vehicle id so we only need to find that
+     */
     getRecordsByVehicle: async (vehicleId, sortBy, direction) => {
         const query = `sortBy=${sortBy}&direction=${direction}`;
         const response = await fetch(`${urlBase}/service-records/vehicle/${vehicleId}?${query}`, {
@@ -119,9 +100,10 @@ export const recordService = {
     deleteRecord: async (id) => {
         const response = await fetch(`${urlBase}/service-records/${id}`, {
             method: 'DELETE',
-            headers: { 'Authorization': getAuthHeader() }
+            headers: {'Authorization': getAuthHeader()}
         });
         if (!response.ok) throw new Error('Failed to erase log entry row reference');
         return true;
     }
+}
 };
